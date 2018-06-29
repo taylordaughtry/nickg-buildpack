@@ -45,9 +45,10 @@ else
   erb "$BUILDPACK_DIR/conf/sigsci-agent.conf.erb" > "${SIGSCI_DIR}/etc/agent.conf"
 fi
 
-if [ -f "${SIGSCI_DIR}/bin/sigsci-agent" ]
+if [ -f "${BUILDPACK_DIR}/bin/sigsci-agent" ]
 then
    log "Using existing agent"
+   cp -f "${BUILDPACK_DIR}/bin/sigsci-agent" "${SIGSCI_DIR}/bin/sigsci-agent"
 else
 
 # if agent URL is not given, then figure it out
