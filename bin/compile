@@ -32,6 +32,22 @@ export_env_dir
 BUILDPACK_DIR=$(pwd)
 SIGSCI_DIR=${BUILD_DIR}/sigsci
 
+# create our directory structure
+log "Creating sigsci directories"
+mkdir -p ${SIGSCI_DIR}/{etc,bin}
+
+if [ -f "${SIGSCI_DIR}/etc/agent.conf" ]
+  log "using existing agent.conf file"
+else
+# generate config file
+  log "Populating sigsci agent configuration file"
+  erb "$BUILDPACK_DIR/conf/sigsci-agent.conf.erb" > "${SIGSCI_DIR}/etc/agent.conf"
+fi
+
+if [ -f "${SIGSCI_DIR}/bin/sigsci-agent" ]
+   log "Using existing agent"
+else
+
 # if agent URL is not given, then figure it out
 if [ -z "$SIGSCI_AGENT_URL" ]
 then
@@ -56,20 +72,13 @@ else
     SIGSCI_AGENT_VERSION=$SIGSCI_AGENT_URL
 fi
 
-# create our directory structure
-log "Creating sigsci directories"
-mkdir -p ${SIGSCI_DIR}/{etc,bin}
-
-# generate config file
-log "Populating sigsci agent configuration file"
-erb "$BUILDPACK_DIR/conf/sigsci-agent.conf.erb" > "${SIGSCI_DIR}/etc/agent.conf"
-
 # install agent
 log "Downloading and installing sigsci-agent (${SIGSCI_AGENT_VERSION})"
 curl -s $SIGSCI_AGENT_URL | tar -xz && mv sigsci-agent "${SIGSCI_DIR}/bin/sigsci-agent"
-
-chmod 700 ${SIGSCI_DIR}/bin/*
+fi
 
 log "Installing sigsci-start application wrapper"
 cp "${BUILDPACK_DIR}/bin/wait-for" ${SIGSCI_DIR}/bin
 cp "${BUILDPACK_DIR}/bin/sigsci-start" ${SIGSCI_DIR}/bin
+
+chmod 700 ${SIGSCI_DIR}/bin/*
