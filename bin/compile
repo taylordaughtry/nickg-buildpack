@@ -37,6 +37,7 @@ log "Creating sigsci directories"
 mkdir -p ${SIGSCI_DIR}/{etc,bin}
 
 if [ -f "${SIGSCI_DIR}/etc/agent.conf" ]
+then
   log "using existing agent.conf file"
 else
 # generate config file
