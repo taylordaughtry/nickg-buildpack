@@ -46,6 +46,7 @@ else
 fi
 
 if [ -f "${SIGSCI_DIR}/bin/sigsci-agent" ]
+then
    log "Using existing agent"
 else
 
