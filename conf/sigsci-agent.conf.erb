@@ -3,5 +3,6 @@
 reverse-proxy-accesslog = "<%= ENV['SIGSCI_REVERSE_PROXY_ACCESSLOG'] %>"
 debug-standalone=3
 statsd-address="127.0.0.1:8125"
-statsd-metrics="sigsci.agent.signal.*,sigsci.agent.process.*"
+statsd-metrics="*"
+#statsd-metrics="sigsci.agent.waf.*,sigsci.agent.rpc.*,sigsci.agent.runtime.*,sigsci.agent.signal.*"
 
